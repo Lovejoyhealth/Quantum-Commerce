@@ -1,0 +1,192 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Quantum Cognitive Commerce: The Future of Personalization</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;700;900&display=swap" rel="stylesheet">
+    <style>
+        body {
+            font-family: 'Inter', sans-serif;
+            background-color: #0a0a0a;
+            color: #e2e8f0;
+        }
+        .hero-gradient {
+            background: radial-gradient(circle at 50% 30%, rgba(56, 189, 248, 0.15), transparent 50%);
+        }
+        .section-gradient {
+             background: radial-gradient(circle at 50% 0%, rgba(192, 132, 252, 0.1), transparent 60%);
+        }
+        .card {
+            background: rgba(255, 255, 255, 0.03);
+            border: 1px solid rgba(255, 255, 255, 0.1);
+            backdrop-filter: blur(10px);
+        }
+        .tag {
+            background-color: rgba(56, 189, 248, 0.1);
+            color: #38bdf8;
+            border: 1px solid rgba(56, 189, 248, 0.3);
+        }
+        .math-symbol {
+            font-family: 'Times New Roman', serif;
+            font-style: italic;
+            font-size: 1.25rem;
+            color: #c084fc;
+        }
+        .workflow-arrow {
+            position: relative;
+        }
+        .workflow-arrow::after {
+            content: '→';
+            position: absolute;
+            right: -2rem;
+            top: 50%;
+            transform: translateY(-50%);
+            font-size: 2rem;
+            color: #38bdf8;
+            opacity: 0.5;
+        }
+        @media (max-width: 1023px) {
+            .workflow-arrow::after {
+                content: '↓';
+                right: 50%;
+                transform: translateX(50%);
+                top: 100%;
+                margin-top: 1rem;
+            }
+        }
+    </style>
+</head>
+<body class="antialiased">
+
+    <!-- Hero Section -->
+    <div class="relative min-h-screen flex items-center justify-center p-4 overflow-hidden hero-gradient">
+        <div class="absolute inset-0 flex items-center justify-center opacity-20">
+            <img src="http://googleusercontent.com/file_content/1" alt="Quantum Brain Artifact" class="max-w-3xl w-full h-auto" />
+        </div>
+        <div class="text-center z-10">
+            <span class="tag text-sm font-medium px-3 py-1 rounded-full">Next-Generation AI</span>
+            <h1 class="text-4xl md:text-6xl font-black mt-4 text-white">Quantum Cognitive Commerce</h1>
+            <p class="mt-4 max-w-2xl mx-auto text-lg md:text-xl text-slate-300">
+                Moving beyond classical AI to understand the emotional and cognitive drivers of choice. We model the ambiguity of human decisions to connect people with their ultimate purchasing journey.
+            </p>
+            <div class="mt-8 flex justify-center gap-4">
+                <a href="#concepts" class="bg-sky-500 text-white font-bold py-3 px-6 rounded-lg hover:bg-sky-600 transition-all">Explore the Concepts</a>
+                <a href="#usecase" class="bg-slate-700 text-white font-bold py-3 px-6 rounded-lg hover:bg-slate-600 transition-all">See the Use Case</a>
+            </div>
+        </div>
+    </div>
+
+    <!-- Introduction to Quantum Cognitive Modeling -->
+    <section id="concepts" class="py-20 px-4 section-gradient">
+        <div class="max-w-5xl mx-auto">
+            <div class="text-center mb-12">
+                <h2 class="text-3xl md:text-4xl font-bold text-white">Why Quantum Cognition?</h2>
+                <p class="mt-4 text-lg text-slate-400 max-w-3xl mx-auto">Classical models assume we are rational calculators. Quantum cognitive models embrace the reality: human decision-making is ambiguous, contextual, and deeply influenced by emotion. We don't just *have* preferences; we construct them in the moment.</p>
+            </div>
+
+            <div class="grid md:grid-cols-2 gap-8 items-start">
+                <!-- Superposition Card -->
+                <div class="card p-8 rounded-2xl">
+                    <h3 class="text-2xl font-bold text-white">1. Superposition: The State of Indecision</h3>
+                    <p class="mt-4 text-slate-300">Before making a choice, your mind holds multiple options at once. This state includes not only your preferences but also your current emotional state (e.g., calm, excited, stressed), which colors your perception of the choices.</p>
+                    <div class="mt-6 p-6 bg-black rounded-lg text-center">
+                        <div class="text-2xl font-mono text-slate-200 flex items-center justify-center space-x-2">
+                            <span class="math-symbol">|ψ⟩</span>
+                            <span>=</span>
+                            <span class="math-symbol">|Emotion⟩</span>
+                            <span class="text-xl">⊗</span>
+                            <span class="text-xl">(</span>
+                            <span class="math-symbol">α</span>
+                            <span class="math-symbol">|Choice A⟩</span>
+                            <span>+</span>
+                            <span class="math-symbol">β</span>
+                            <span class="math-symbol">|Choice B⟩</span>
+                            <span class="text-xl">)</span>
+                        </div>
+                        <p class="mt-4 text-sm text-slate-400">Your total cognitive state <span class="math-symbol">|ψ⟩</span> is an entanglement of your emotional state and your potential choices.</p>
+                    </div>
+                </div>
+
+                <!-- Contextuality Card -->
+                <div class="card p-8 rounded-2xl">
+                    <h3 class="text-2xl font-bold text-white">2. Contextuality: Order Matters</h3>
+                    <p class="mt-4 text-slate-300">The order in which you receive information fundamentally changes your final decision. Seeing a high price when you're feeling stressed has a different impact than seeing it when you're calm. The interaction of context and emotion shapes the outcome.</p>
+                    <div class="mt-6 p-6 bg-black rounded-lg">
+                        <p class="text-center font-mono text-lg text-slate-200">Context A, then B <span class="text-red-500 font-bold text-2xl">≠</span> Context B, then A</p>
+                        <div class="mt-4 flex justify-center items-center space-x-4">
+                            <div class="text-center">
+                                <svg xmlns="http://www.w3.org/2000/svg" class="h-12 w-12 mx-auto text-sky-400" fill="none" viewBox="0 0 24 24" stroke="currentColor"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 5H7a2 2 0 00-2 2v12a2 2 0 002 2h10a2 2 0 002-2V7a2 2 0 00-2-2h-2M9 5a2 2 0 002 2h2a2 2 0 002-2M9 5a2 2 0 012-2h2a2 2 0 012 2m-6 9l2 2 4-4" /></svg>
+                                <p class="mt-2 text-sm text-slate-300">Path 1</p>
+                            </div>
+                            <div class="text-red-500 font-bold text-2xl">...</div>
+                             <div class="text-center">
+                                <svg xmlns="http://www.w3.org/2000/svg" class="h-12 w-12 mx-auto text-purple-400" fill="none" viewBox="0 0 24 24" stroke="currentColor"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 12l2 2 4-4m6 2a9 9 0 11-18 0 9 9 0 0118 0z" /></svg>
+                                <p class="mt-2 text-sm text-slate-300">Different Outcome</p>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- Use Case Section -->
+    <section id="usecase" class="py-20 px-4">
+        <div class="max-w-6xl mx-auto">
+            <div class="text-center mb-16">
+                <h2 class="text-3xl md:text-4xl font-bold text-white">Use Case: Emotion-Aware E-Commerce</h2>
+                <p class="mt-4 text-lg text-slate-400 max-w-3xl mx-auto">We use this new understanding of decision-making to create a recommendation engine for e-commerce platforms that respects privacy while connecting customers to products they truly want.</p>
+            </div>
+
+            <!-- Workflow Diagram -->
+            <div class="grid lg:grid-cols-3 gap-8 md:gap-16 text-center">
+                <!-- Step 1 -->
+                <div class="workflow-arrow">
+                    <div class="card p-6 rounded-2xl h-full flex flex-col items-center justify-center">
+                        <div class="bg-sky-500/20 p-3 rounded-full mb-4">
+                            <svg xmlns="http://www.w3.org/2000/svg" class="h-8 w-8 text-sky-400" fill="none" viewBox="0 0 24 24" stroke="currentColor"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 15v2m-6 4h12a2 2 0 002-2v-6a2 2 0 00-2-2H6a2 2 0 00-2 2v6a2 2 0 002 2zm10-10V7a4 4 0 00-8 0v4h8z" /></svg>
+                        </div>
+                        <h4 class="font-bold text-xl text-white">1. Federated State Prep</h4>
+                        <p class="text-slate-400 mt-2 text-sm">On the user's device, consented bioinformatics data is used to create an initial "Cognitive State Vector," representing latent preferences and current emotional state. <strong class="text-sky-400">Raw data never leaves the device.</strong></p>
+                    </div>
+                </div>
+
+                <!-- Step 2 -->
+                <div class="workflow-arrow">
+                    <div class="card p-6 rounded-2xl h-full flex flex-col items-center justify-center">
+                        <div class="bg-purple-500/20 p-3 rounded-full mb-4">
+                           <svg xmlns="http://www.w3.org/2000/svg" class="h-8 w-8 text-purple-400" fill="none" viewBox="0 0 24 24" stroke="currentColor"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M10 21h7a2 2 0 002-2V9.414a1 1 0 00-.293-.707l-5.414-5.414A1 1 0 0012.586 3H7a2 2 0 00-2 2v11m0 5l4.879-4.879m0 0a3 3 0 104.243-4.242 3 3 0 00-4.243 4.242z" /></svg>
+                        </div>
+                        <h4 class="font-bold text-xl text-white">2. Cognitive Simulation</h4>
+                        <p class="text-slate-400 mt-2 text-sm">The anonymized state vector and browsing context are sent to the cloud. A quantum cognitive model simulates how the user's emotional state interacts with the product, predicting the most likely choices.</p>
+                    </div>
+                </div>
+
+                <!-- Step 3 -->
+                <div class="">
+                    <div class="card p-6 rounded-2xl h-full flex flex-col items-center justify-center">
+                        <div class="bg-emerald-500/20 p-3 rounded-full mb-4">
+                            <svg xmlns="http://www.w3.org/2000/svg" class="h-8 w-8 text-emerald-400" fill="none" viewBox="0 0 24 24" stroke="currentColor"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M13 10V3L4 14h7v7l9-11h-7z" /></svg>
+                        </div>
+                        <h4 class="font-bold text-xl text-white">3. Hyper-Personalization</h4>
+                        <p class="text-slate-400 mt-2 text-sm">The simulation results are sent back, and the e-commerce store dynamically updates. The user sees products that resonate with their cognitive and emotional state, increasing engagement and sales.</p>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- Footer -->
+    <footer class="py-12 px-4 border-t border-slate-800">
+        <div class="max-w-5xl mx-auto text-center">
+            <p class="text-slate-400">Exploring the intersection of quantum theory, cognitive science, and artificial intelligence.</p>
+            <p class="text-sm text-slate-500 mt-2">Conceptual Website &copy; 2025</p>
+        </div>
+    </footer>
+
+</body>
+</html>
