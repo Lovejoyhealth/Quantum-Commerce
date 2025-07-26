@@ -3,7 +3,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>PoC: Quantum Cognitive Recommender</title>
+    <title>PoC: Emotion-Aware Cognitive Recommender</title>
     <script src="https://cdn.tailwindcss.com"></script>
     <link rel="preconnect" href="https://fonts.googleapis.com">
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
@@ -11,12 +11,13 @@
     <style>
         body {
             font-family: 'Inter', sans-serif;
-            background-color: #111827;
+            background-color: #0a0a0a;
             color: #e2e8f0;
         }
         .card {
-            background: #1f2937;
-            border: 1px solid #374151;
+            background: rgba(30, 41, 59, 0.5);
+            border: 1px solid rgba(255, 255, 255, 0.1);
+            backdrop-filter: blur(10px);
         }
         .product-card {
             transition: transform 0.2s, box-shadow 0.2s;
@@ -50,36 +51,48 @@
         .recommendation-item {
             transition: all 0.3s ease-in-out;
         }
+        .math-symbol {
+            font-family: 'Times New Roman', serif;
+            font-style: italic;
+            font-size: 1.1rem;
+            color: #c084fc;
+        }
+        .derived-bar-bg {
+            background-color: #374151;
+        }
+        .derived-bar-fill {
+            background-color: #a78bfa;
+            transition: width 0.3s ease-in-out;
+        }
     </style>
 </head>
 <body class="antialiased">
 
     <div class="max-w-7xl mx-auto p-4 sm:p-6 lg:p-8">
         <!-- Header -->
-        <div class="text-center my-8">
-            <h1 class="text-4xl font-bold text-white">Quantum Cognitive Recommender</h1>
-            <p class="mt-2 text-lg text-slate-400">An interactive proof-of-concept simulating how context shapes preference.</p>
+        <div class="text-center my-8 relative">
+             <img src="http://googleusercontent.com/file_content/1" alt="Quantum Brain Artifact" class="max-w-md w-full h-auto mx-auto opacity-20" />
+            <div class="absolute inset-0 flex flex-col items-center justify-center">
+                <h1 class="text-4xl font-bold text-white">Emotion-Aware Recommender</h1>
+                <p class="mt-2 text-lg text-slate-400">A PoC simulating how emotion and context shape preference.</p>
+            </div>
         </div>
 
         <div class="grid lg:grid-cols-3 gap-8">
             <!-- Left Column: Controls and Profile -->
             <div class="lg:col-span-1 space-y-8">
                 <div class="card p-6 rounded-lg">
-                    <h2 class="text-2xl font-bold text-white border-b border-slate-600 pb-3">1. Simulated Customer Profile</h2>
-                    <p class="text-sm text-slate-400 mt-3">Adjust the sliders to define the customer's latent "bioinformatics" traits. This is their initial cognitive state.</p>
-                    <div id="customer-profile" class="mt-6 space-y-4">
-                        <!-- Sliders will be injected here by JS -->
-                    </div>
-                </div>
-                 <div class="card p-6 rounded-lg">
-                    <h2 class="text-2xl font-bold text-white border-b border-slate-600 pb-3">How it Works</h2>
-                    <p class="text-sm text-slate-400 mt-3">
-                        This demo uses classical linear algebra to *simulate* a quantum cognitive model.
-                        <br><br>
-                        1. Your profile creates a "state vector" <span class="font-mono text-sky-400">|ψ⟩</span>.
-                        <br>2. Clicking a product provides "context" by projecting your state vector towards that product's attributes.
-                        <br>3. The recommendations are re-ranked based on the similarity (dot product) between your *new* state and each product.
-                    </p>
+                    <h2 class="text-2xl font-bold text-white border-b border-slate-600 pb-3">1. Simulated Cognitive State</h2>
+                    <p class="text-sm text-slate-400 mt-3">Define the customer's latent traits and biometric data.</p>
+                    
+                    <h3 class="font-semibold text-lg text-sky-400 mt-6">Cognitive Traits</h3>
+                    <div id="cognitive-profile" class="mt-4 space-y-4"></div>
+                    
+                    <h3 class="font-semibold text-lg text-green-400 mt-8">Fusion Sensor Data (Biometrics)</h3>
+                    <div id="biometric-inputs" class="mt-4 space-y-4"></div>
+
+                    <h3 class="font-semibold text-lg text-purple-400 mt-8">Derived Emotional State</h3>
+                    <div id="emotional-profile" class="mt-4 space-y-4"></div>
                 </div>
             </div>
 
@@ -88,16 +101,12 @@
                 <div class="card p-6 rounded-lg">
                     <h2 class="text-2xl font-bold text-white border-b border-slate-600 pb-3">2. Product Catalog</h2>
                     <p class="text-sm text-slate-400 mt-3">Click on a product to simulate viewing it. Observe how this "context" changes the recommendations below.</p>
-                    <div id="product-catalog" class="mt-6 grid grid-cols-2 md:grid-cols-3 gap-4">
-                        <!-- Product cards will be injected here by JS -->
-                    </div>
+                    <div id="product-catalog" class="mt-6 grid grid-cols-2 md:grid-cols-3 gap-4"></div>
                 </div>
                 <div class="card p-6 rounded-lg">
                     <h2 class="text-2xl font-bold text-white border-b border-slate-600 pb-3">3. Real-Time Recommendations</h2>
-                     <p class="text-sm text-slate-400 mt-3">Products are ranked by their alignment with your current cognitive state.</p>
-                    <div id="recommendations" class="mt-6 space-y-3">
-                        <!-- Recommendation list will be injected here by JS -->
-                    </div>
+                     <p class="text-sm text-slate-400 mt-3">Products are ranked by their alignment with your current cognitive & emotional state.</p>
+                    <div id="recommendations" class="mt-6 space-y-3"></div>
                 </div>
             </div>
         </div>
@@ -106,93 +115,118 @@
     <script>
         document.addEventListener('DOMContentLoaded', () => {
             // --- DATA DEFINITIONS ---
-
-            // Define the dimensions of our cognitive model
-            const TRAITS = {
-                'Novelty Seeking': 'How much the user values new and unique items.',
-                'Quality Focus': 'How much the user prioritizes craftsmanship and durability.',
-                'Price Sensitivity': 'How much the user is influenced by lower prices (inverted).',
-                'Trend Alignment': 'How much the user follows current fashion trends.'
+            const COGNITIVE_TRAITS = {
+                'Novelty Seeking': 'Values new and unique items.',
+                'Quality Focus': 'Prioritizes craftsmanship and durability.',
+                'Price Sensitivity': 'Influenced by lower prices (inverted).',
+            };
+            
+            const BIOMETRIC_INPUTS = {
+                'Heart Rate Variability (HRV)': 'High HRV suggests calm; low suggests stress.',
+                'Electrodermal Activity (EDA)': 'Low EDA suggests calm; high suggests arousal/stress.',
+                'Brainwave Ratio (Alpha/Beta)': 'High ratio suggests focus; low suggests distraction.'
             };
 
-            // Define our product catalog
+            const EMOTIONAL_STATES = {
+                'Calm vs. Stressed': 'Derived from HRV and EDA.',
+                'Focused vs. Distracted': 'Derived from Brainwave Ratio.',
+            };
+
             const PRODUCTS = [
-                { id: 1, name: 'Classic Leather Loafers', emoji: '👞', traits: { 'Novelty Seeking': 0.1, 'Quality Focus': 0.9, 'Price Sensitivity': 0.3, 'Trend Alignment': 0.2 } },
-                { id: 2, name: 'Futuristic Neon Sneakers', emoji: '👟', traits: { 'Novelty Seeking': 0.9, 'Quality Focus': 0.4, 'Price Sensitivity': 0.6, 'Trend Alignment': 0.9 } },
-                { id: 3, name: 'Handcrafted Hiking Boots', emoji: '🥾', traits: { 'Novelty Seeking': 0.3, 'Quality Focus': 1.0, 'Price Sensitivity': 0.2, 'Trend Alignment': 0.1 } },
-                { id: 4, name: 'Minimalist White Trainers', emoji: '👟', traits: { 'Novelty Seeking': 0.4, 'Quality Focus': 0.6, 'Price Sensitivity': 0.7, 'Trend Alignment': 0.8 } },
-                { id: 5, name: 'Affordable Canvas Slip-ons', emoji: '🥿', traits: { 'Novelty Seeking': 0.2, 'Quality Focus': 0.3, 'Price Sensitivity': 0.9, 'Trend Alignment': 0.5 } },
-                { id: 6, name: 'Limited Edition Art Shoes', emoji: '🎨', traits: { 'Novelty Seeking': 1.0, 'Quality Focus': 0.7, 'Price Sensitivity': 0.4, 'Trend Alignment': 0.6 } }
+                { id: 1, name: 'Cozy Cashmere Throw', emoji: '🧣', traits: { 'Novelty Seeking': 0.2, 'Quality Focus': 0.9, 'Price Sensitivity': 0.3 }, emotion: { 'Calm vs. Stressed': 0.1, 'Focused vs. Distracted': 0.4 } },
+                { id: 2, name: 'High-Tech Drone', emoji: '🚁', traits: { 'Novelty Seeking': 0.9, 'Quality Focus': 0.7, 'Price Sensitivity': 0.2 }, emotion: { 'Calm vs. Stressed': 0.8, 'Focused vs. Distracted': 0.9 } },
+                { id: 3, name: 'Meditation App Sub', emoji: '🧘', traits: { 'Novelty Seeking': 0.5, 'Quality Focus': 0.4, 'Price Sensitivity': 0.8 }, emotion: { 'Calm vs. Stressed': 0.2, 'Focused vs. Distracted': 0.8 } },
+                { id: 4, name: 'Minimalist Desk Organizer', emoji: '🗂️', traits: { 'Novelty Seeking': 0.3, 'Quality Focus': 0.8, 'Price Sensitivity': 0.6 }, emotion: { 'Calm vs. Stressed': 0.4, 'Focused vs. Distracted': 1.0 } },
+                { id: 5, name: 'Impulse-Buy Gadget', emoji: '🕹️', traits: { 'Novelty Seeking': 0.8, 'Quality Focus': 0.2, 'Price Sensitivity': 0.9 }, emotion: { 'Calm vs. Stressed': 0.9, 'Focused vs. Distracted': 0.2 } },
+                { id: 6, name: 'Luxury Fountain Pen', emoji: '✒️', traits: { 'Novelty Seeking': 0.6, 'Quality Focus': 1.0, 'Price Sensitivity': 0.1 }, emotion: { 'Calm vs. Stressed': 0.3, 'Focused vs. Distracted': 0.7 } }
             ];
 
             // --- STATE MANAGEMENT ---
-            let customerState = {};
+            let cognitiveState = {};
+            let biometricState = {};
+            let emotionalState = {};
             let selectedProductId = null;
+            const COGNITIVE_WEIGHT = 0.6;
+            const EMOTIONAL_WEIGHT = 0.4;
 
-            // --- CORE LOGIC: SIMULATED QUANTUM COGNITION ---
-
-            // Normalize a vector to have a length of 1 (unit vector)
+            // --- CORE LOGIC ---
             function normalize(vector) {
-                const magnitude = Math.sqrt(vector.reduce((sum, val) => sum + val * val, 0));
-                if (magnitude === 0) return vector;
-                return vector.map(val => val / magnitude);
+                const mag = Math.sqrt(vector.reduce((sum, val) => sum + val * val, 0));
+                return mag === 0 ? vector : vector.map(v => v / mag);
             }
 
-            // Calculate the dot product (similarity) between two vectors
             function dotProduct(vecA, vecB) {
                 return vecA.reduce((sum, val, i) => sum + val * vecB[i], 0);
             }
 
-            // Project state vector towards a context vector
             function projectState(currentStateVec, contextVec, strength = 0.5) {
-                const projectedVec = currentStateVec.map((val, i) => val * (1 - strength) + contextVec[i] * strength);
-                return normalize(projectedVec);
-            }
-            
-            // Get the current customer state as a normalized vector
-            function getCustomerStateVector() {
-                const vector = Object.keys(TRAITS).map(trait => customerState[trait]);
-                return normalize(vector);
+                const projected = currentStateVec.map((v, i) => v * (1 - strength) + contextVec[i] * strength);
+                return normalize(projected);
             }
 
-            // Get a product's traits as a normalized vector
-            function getProductVector(product) {
-                const vector = Object.keys(TRAITS).map(trait => product.traits[trait]);
-                return normalize(vector);
+            const getVector = (stateObj, keys) => normalize(keys.map(key => stateObj[key]));
+            const getProductVector = (product, keys) => normalize(keys.map(key => product[key]));
+
+            // *** SENSOR FUSION LOGIC ***
+            function deriveEmotionalState() {
+                // Rule for 'Calm vs. Stressed'
+                // Low HRV and High EDA -> Stressed (high value)
+                // High HRV and Low EDA -> Calm (low value)
+                const hrv = biometricState['Heart Rate Variability (HRV)'];
+                const eda = biometricState['Electrodermal Activity (EDA)'];
+                emotionalState['Calm vs. Stressed'] = (1 - hrv) * 0.5 + eda * 0.5;
+
+                // Rule for 'Focused vs. Distracted'
+                // High Alpha/Beta Ratio -> Focused (high value)
+                emotionalState['Focused vs. Distracted'] = biometricState['Brainwave Ratio (Alpha/Beta)'];
             }
 
-            // --- UI RENDERING AND UPDATES ---
 
-            const profileContainer = document.getElementById('customer-profile');
+            // --- UI & RENDERING ---
+            const cognitiveContainer = document.getElementById('cognitive-profile');
+            const biometricContainer = document.getElementById('biometric-inputs');
+            const emotionalContainer = document.getElementById('emotional-profile');
             const catalogContainer = document.getElementById('product-catalog');
             const recommendationsContainer = document.getElementById('recommendations');
 
-            // Function to render the entire UI
-            function render() {
-                renderProfile();
-                renderCatalog();
-                updateRecommendations();
+            function createSliders(container, definitions, stateObj, isInteractive = true) {
+                container.innerHTML = '';
+                Object.keys(definitions).forEach(key => {
+                    if (isInteractive) {
+                        const sliderHTML = `
+                            <div>
+                                <label for="${key}" class="block text-sm font-medium text-slate-300">${key}</label>
+                                <p class="text-xs text-slate-500 mb-2">${definitions[key]}</p>
+                                <input type="range" id="${key}" name="${key}" min="0" max="1" step="0.1" value="${stateObj[key]}" class="w-full h-2 bg-slate-700 rounded-lg appearance-none cursor-pointer">
+                            </div>
+                        `;
+                        container.insertAdjacentHTML('beforeend', sliderHTML);
+                    } else {
+                        const value = stateObj[key];
+                        const percentage = (value * 100).toFixed(0);
+                        const barHTML = `
+                            <div>
+                                <label class="block text-sm font-medium text-slate-300">${key}</label>
+                                <p class="text-xs text-slate-500 mb-2">${definitions[key]}</p>
+                                <div class="w-full derived-bar-bg rounded-full h-4">
+                                    <div class="derived-bar-fill h-4 rounded-full text-right pr-2 text-xs text-black font-bold flex items-center justify-end" style="width: ${percentage}%">
+                                        ${percentage}%
+                                    </div>
+                                </div>
+                            </div>
+                        `;
+                         container.insertAdjacentHTML('beforeend', barHTML);
+                    }
+                });
             }
             
-            // Render the customer profile sliders
             function renderProfile() {
-                profileContainer.innerHTML = '';
-                Object.keys(TRAITS).forEach(trait => {
-                    const value = customerState[trait];
-                    const description = TRAITS[trait];
-                    const sliderHTML = `
-                        <div>
-                            <label for="${trait}" class="block text-sm font-medium text-slate-300">${trait}</label>
-                            <p class="text-xs text-slate-500 mb-2">${description}</p>
-                            <input type="range" id="${trait}" name="${trait}" min="0" max="1" step="0.1" value="${value}" class="w-full h-2 bg-slate-700 rounded-lg appearance-none cursor-pointer">
-                        </div>
-                    `;
-                    profileContainer.insertAdjacentHTML('beforeend', sliderHTML);
-                });
+                createSliders(cognitiveContainer, COGNITIVE_TRAITS, cognitiveState, true);
+                createSliders(biometricContainer, BIOMETRIC_INPUTS, biometricState, true);
+                createSliders(emotionalContainer, EMOTIONAL_STATES, emotionalState, false); // Not interactive
                 addProfileListeners();
             }
 
-            // Render the product catalog
             function renderCatalog() {
                 catalogContainer.innerHTML = '';
                 PRODUCTS.forEach(product => {
@@ -208,34 +242,32 @@
                 addProductListeners();
             }
 
-            // Update the recommendations list
             function updateRecommendations() {
-                let currentStateVector = getCustomerStateVector();
+                let currentCognitiveVec = getVector(cognitiveState, Object.keys(COGNITIVE_TRAITS));
+                let currentEmotionalVec = getVector(emotionalState, Object.keys(EMOTIONAL_STATES));
 
-                // If a product is selected, project the state towards it
                 if (selectedProductId) {
-                    const selectedProduct = PRODUCTS.find(p => p.id === selectedProductId);
-                    const productVector = getProductVector(selectedProduct);
-                    currentStateVector = projectState(currentStateVector, productVector, 0.4);
+                    const product = PRODUCTS.find(p => p.id === selectedProductId);
+                    currentCognitiveVec = projectState(currentCognitiveVec, getProductVector(product.traits, Object.keys(COGNITIVE_TRAITS)), 0.4);
+                    currentEmotionalVec = projectState(currentEmotionalVec, getProductVector(product.emotion, Object.keys(EMOTIONAL_STATES)), 0.4);
                 }
 
-                // Calculate scores for all products based on the current (possibly projected) state
                 const scoredProducts = PRODUCTS.map(product => {
-                    const productVector = getProductVector(product);
-                    const score = dotProduct(currentStateVector, productVector);
-                    return { ...product, score };
-                }).sort((a, b) => b.score - a.score);
+                    const cogScore = dotProduct(currentCognitiveVec, getProductVector(product.traits, Object.keys(COGNITIVE_TRAITS)));
+                    const emoScore = dotProduct(currentEmotionalVec, getProductVector(product.emotion, Object.keys(EMOTIONAL_STATES)));
+                    const finalScore = (cogScore * COGNITIVE_WEIGHT) + (emoScore * EMOTIONAL_WEIGHT);
+                    return { ...product, finalScore };
+                }).sort((a, b) => b.finalScore - a.finalScore);
 
-                // Render the list
                 recommendationsContainer.innerHTML = '';
                 scoredProducts.forEach((product, index) => {
-                    const scorePercentage = (product.score * 100).toFixed(1);
+                    const scorePercentage = (product.finalScore * 100).toFixed(1);
                     const itemHTML = `
                         <div class="recommendation-item card flex items-center p-3 rounded-lg" style="order: ${index}">
                             <div class="text-3xl mr-4">${product.emoji}</div>
                             <div class="flex-grow">
                                 <p class="font-semibold text-white">${product.name}</p>
-                                <p class="text-sm text-slate-400">Alignment Score: ${scorePercentage}%</p>
+                                <p class="text-sm text-slate-400">Total Alignment: ${scorePercentage}%</p>
                             </div>
                             <div class="w-24 h-4 bg-slate-700 rounded-full overflow-hidden">
                                 <div class="bg-sky-500 h-full rounded-full" style="width: ${scorePercentage}%;"></div>
@@ -247,12 +279,21 @@
             }
 
             // --- EVENT LISTENERS ---
-
             function addProfileListeners() {
-                Object.keys(TRAITS).forEach(trait => {
-                    document.getElementById(trait).addEventListener('input', (e) => {
-                        customerState[trait] = parseFloat(e.target.value);
-                        updateRecommendations();
+                const cognitiveKeys = Object.keys(COGNITIVE_TRAITS);
+                const biometricKeys = Object.keys(BIOMETRIC_INPUTS);
+
+                cognitiveKeys.forEach(key => {
+                    document.getElementById(key).addEventListener('input', (e) => {
+                        cognitiveState[key] = parseFloat(e.target.value);
+                        updateAll();
+                    });
+                });
+
+                biometricKeys.forEach(key => {
+                     document.getElementById(key).addEventListener('input', (e) => {
+                        biometricState[key] = parseFloat(e.target.value);
+                        updateAll();
                     });
                 });
             }
@@ -261,21 +302,30 @@
                 document.querySelectorAll('.product-card').forEach(card => {
                     card.addEventListener('click', (e) => {
                         const newId = parseInt(e.currentTarget.dataset.id);
-                        // If clicking the same card, deselect it. Otherwise, select the new one.
                         selectedProductId = (selectedProductId === newId) ? null : newId;
-                        renderCatalog(); // Re-render to show selection highlight
+                        renderCatalog();
                         updateRecommendations();
                     });
                 });
             }
 
+            function updateAll() {
+                selectedProductId = null; // Reset context on profile change
+                deriveEmotionalState();
+                createSliders(emotionalContainer, EMOTIONAL_STATES, emotionalState, false); // Re-render derived state
+                renderCatalog();
+                updateRecommendations();
+            }
+
             // --- INITIALIZATION ---
             function init() {
-                // Set initial customer state
-                Object.keys(TRAITS).forEach(trait => {
-                    customerState[trait] = 0.5;
-                });
-                render();
+                Object.keys(COGNITIVE_TRAITS).forEach(key => cognitiveState[key] = 0.5);
+                Object.keys(BIOMETRIC_INPUTS).forEach(key => biometricState[key] = 0.5);
+                deriveEmotionalState();
+                
+                renderProfile();
+                renderCatalog();
+                updateRecommendations();
             }
 
             init();
